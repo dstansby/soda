@@ -20,17 +20,20 @@ class DataAvailabilityPlotter:
         self.plotter.outline_line_color = None
 
         self.all_options = ['SWA-PAS-GRND-MOM', 'MAG-RTN-NORMAL',
-                            'EUI-FSI304-IMAGE', 'EUI-FSI174-IMAGE']
+                            'EUI-FSI304-IMAGE', 'EUI-FSI174-IMAGE',
+                            'SWA-EAS-PAD-PSD', 'SWA-HIS-PHA']
+        self.all_options = sorted(self.all_options)
         self.multi_choice = MultiChoice(
-            value=['SWA-PAS-GRND-MOM', 'MAG-RTN-NORMAL'],
+            value=self.all_options,
             options=self.all_options,
             width_policy='fit',
-            width=500,
+            width=200,
+            sizing_mode='stretch_height',
             title='Select data products')
 
-        self.layout = layout([[self.plotter],
-                              [Spacer(), self.multi_choice, Spacer()]],
-                             sizing_mode='stretch_width')
+        self.layout = layout([[self.multi_choice, self.plotter]],
+                             sizing_mode='stretch_width',
+                             height=600)
 
         # Add data
         for desc in self.all_options:
