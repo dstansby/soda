@@ -21,7 +21,8 @@ class DataAvailabilityPlotter:
 
         self.all_options = ['SWA-PAS-GRND-MOM', 'MAG-RTN-NORMAL',
                             'EUI-FSI304-IMAGE', 'EUI-FSI174-IMAGE',
-                            'SWA-EAS-PAD-PSD', 'SWA-HIS-PHA']
+                            'SWA-EAS-PAD-PSD', 'SWA-HIS-PHA',
+                            'RPW-BIA-DENSITY', 'EUI-HRILYA1216-IMAGE']
         self.all_options = sorted(self.all_options)
         self.multi_choice = MultiChoice(
             value=self.all_options,
