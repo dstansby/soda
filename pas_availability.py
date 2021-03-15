@@ -1,6 +1,9 @@
 from soda.availability import DataProduct
 from soda import plot
-from bokeh.io import show
+
+plotter = plot.DataAvailabilityPlotter()
+plotter.show()
+exit()
 
 descriptors = ['SWA-PAS-GRND-MOM', 'MAG-RTN-NORMAL',
                'EUI-FSI304-IMAGE', 'EUI-FSI174-IMAGE']

@@ -51,8 +51,8 @@ class DataProduct:
 
     def save_remote_intervals(self):
         """
-        Get and save the intervals of all data files available in the Solar Oribter
-        Archive for a given data descriptor.
+        Get and save the intervals of all data files available in the
+        Solar Oribter Archive for a given data descriptor.
         """
         print(f'Updating intervals for {self.descriptor}...')
         base_url = ('http://soar.esac.esa.int/soar-sl-tap/tap/'
