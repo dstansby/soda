@@ -12,7 +12,7 @@ _CACHE_DIR.mkdir(exist_ok=True)
 
 
 class DataProduct:
-    def __init__(self, descriptor, level=2, low_latency=False):
+    def __init__(self, descriptor, low_latency=False):
         """
         Parameters
         ----------
@@ -20,13 +20,10 @@ class DataProduct:
             Data product descriptor. These can be found by searching for data on
             http://soar.esac.esa.int/soar/#search, and identifying the descriptor
             from the "Descriptor" column.
-        level: int, optional
-            Data processing level. Defaults to 2.
         low_latency: bool, optional
             If `True`, query low latency data instead of science data.
         """
         self.descriptor = descriptor
-        self.level = level
         self.low_latency = low_latency
 
     @property
@@ -35,7 +32,7 @@ class DataProduct:
         Path to data updated today.
         """
         datestr = _NOW.strftime('%Y-%m-%d')
-        return _CACHE_DIR / f'{self.descriptor}_L{self.level}_{datestr}.csv'
+        return _CACHE_DIR / f'{self.descriptor}_{datestr}.csv'
 
     @property
     def intervals(self):
@@ -73,9 +70,6 @@ class DataProduct:
         query['WHERE'] = (f"descriptor='{self.descriptor}'+AND+"
                           f"begin_time<='{end_time}'+AND+"
                           f"begin_time>='{begin_time}'")
-        # TODO: include error
-        # if self.level is not None:
-        #     query['WHERE'] += f"+AND+level='{self.level}'"
         request_dict['QUERY'] = '+'.join([f'{item}+{query[item]}' for
                                           item in query])
 
