@@ -17,9 +17,9 @@ class DataProduct:
         Parameters
         ----------
         descriptor: str
-            Data product descriptor. These can be found by searching for data on
-            http://soar.esac.esa.int/soar/#search, and identifying the descriptor
-            from the "Descriptor" column.
+            Data product descriptor. These can be found by searching for data
+            on http://soar.esac.esa.int/soar/#search, and identifying the
+            descriptor from the "Descriptor" column.
         low_latency: bool, optional
             If `True`, query low latency data instead of science data.
         """

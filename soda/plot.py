@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from bokeh.io import show
+from bokeh.io import output_file, show
 from bokeh.models import MultiChoice
 from bokeh.plotting import figure
 from bokeh.layouts import layout, Spacer
@@ -9,7 +9,8 @@ from soda.availability import DataProduct
 
 
 class DataAvailabilityPlotter:
-    def __init__(self):
+    def __init__(self, output_filename='soda.html'):
+        output_file(output_filename, title='SODA')
         self.plotter = figure(sizing_mode='stretch_width', plot_height=400,
                               title="Solar Orbiter data availability",
                               x_axis_type='datetime', y_range=[],
