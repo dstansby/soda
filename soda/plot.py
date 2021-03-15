@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
 from bokeh.io import output_file, show
-from bokeh.models import MultiChoice
+from bokeh.models import MultiChoice, PanTool, BoxZoomTool
 from bokeh.plotting import figure
 from bokeh.layouts import layout, Spacer
 
@@ -14,7 +14,13 @@ class DataAvailabilityPlotter:
         self.plotter = figure(sizing_mode='stretch_width', plot_height=400,
                               title="Solar Orbiter data availability",
                               x_axis_type='datetime', y_range=[],
-                              x_range=(datetime(2020, 2, 1), datetime.now()))
+                              x_range=(datetime(2020, 2, 10), datetime.now()),
+                              tools=[PanTool(dimensions='width'),
+                                     BoxZoomTool(dimensions='width'),
+                                     'undo',
+                                     'redo',
+                                     'reset',
+                                     'save'])
         self.plotter.ygrid.grid_line_color = None
         self.plotter.xaxis.axis_label = "Date"
         self.plotter.outline_line_color = None
