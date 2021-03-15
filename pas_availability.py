@@ -2,6 +2,7 @@ from soda import soda
 from soda import plot
 from bokeh.io import show
 
-intervals = soda.intervals('SWA-PAS-GRND-MOM')
+descriptors = ['SWA-PAS-GRND-MOM', 'MAG-RTN-NORMAL']
+intervals = {desc: soda.intervals(desc) for desc in descriptors}
 p = plot.plot_intervals(intervals)
 show(p)
