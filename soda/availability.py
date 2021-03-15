@@ -71,5 +71,4 @@ def intervals(descriptor, level=None, low_latency=False):
     for start, end in zip(info['begin_time'], info['end_time']):
         intervals.append(time.TimeRange(start, end))
 
-    # TODO: log the number of intervals found here
     return intervals
