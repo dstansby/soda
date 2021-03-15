@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from bokeh.io import show
 from bokeh.models import MultiChoice
@@ -12,7 +12,8 @@ class DataAvailabilityPlotter:
     def __init__(self):
         self.plotter = figure(sizing_mode='stretch_width', plot_height=400,
                               title="Solar Orbiter data availability",
-                              x_axis_type='datetime', y_range=[])
+                              x_axis_type='datetime', y_range=[],
+                              x_range=(datetime(2020, 2, 1), datetime.now()))
         self.plotter.ygrid.grid_line_color = None
         self.plotter.xaxis.axis_label = "Date"
         self.plotter.outline_line_color = None
@@ -23,7 +24,8 @@ class DataAvailabilityPlotter:
             value=['SWA-PAS-GRND-MOM', 'MAG-RTN-NORMAL'],
             options=self.all_options,
             width_policy='fit',
-            width=300)
+            width=500,
+            title='Select data products')
 
         self.layout = layout([[self.plotter],
                               [Spacer(), self.multi_choice, Spacer()]],
