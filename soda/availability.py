@@ -45,20 +45,14 @@ class DataProduct:
         if not self.latest_path.exists():
             self.save_remote_intervals()
 
-        df = pd.read_csv(self.latest_path, parse_dates=True)
-        intervals = []
-        for _, row in df.iterrows():
-            intervals.append(time.TimeRange(row[1], row[2]))
-        return intervals
+        df = pd.read_csv(self.latest_path,
+                         parse_dates=['Start', 'End'])
+        return df
 
     def save_remote_intervals(self):
         """
         Get and save the intervals of all data files available in the Solar Oribter
         Archive for a given data descriptor.
-
-        Returns
-        -------
-        list[sunpy.time.TimeRange]
         """
         print(f'Updating intervals for {self.descriptor}...')
         base_url = ('http://soar.esac.esa.int/soar-sl-tap/tap/'
@@ -104,7 +98,9 @@ class DataProduct:
         # Setup intervals
         intervals = []
         for start, end in zip(info['begin_time'], info['end_time']):
-            intervals.append([time.parse_time(start), time.parse_time(end)])
+            intervals.append([time.parse_time(start).datetime,
+                              time.parse_time(end).datetime])
 
         df = pd.DataFrame(intervals)
-        df.to_csv(self.latest_path)
+        df.columns = ['Start', 'End']
+        df.to_csv(self.latest_path, index=False)
