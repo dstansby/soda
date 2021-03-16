@@ -75,8 +75,9 @@ class DataAvailabilityPlotter:
     def merge_intervals(intervals):
         intervals = intervals.sort_values(by='Start')
         start_dates = intervals['Start'].map(lambda t: t.date()).unique()
-        end_dates = (intervals['End'].map(lambda t: t.date()).unique() +
-                     timedelta(days=1))
+        end_dates = (intervals['End'] +
+                     timedelta(days=1) -
+                     timedelta(microseconds=1)).map(lambda t: t.date()).unique()
         intervals = portion.empty()
         for start, end in zip(start_dates, end_dates):
             intervals = intervals | portion.closed(start, end)
