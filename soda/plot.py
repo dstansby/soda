@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import portion
 
 from bokeh.io import output_file, show
 from bokeh.models import MultiChoice, PanTool, BoxZoomTool
@@ -28,8 +29,11 @@ class DataAvailabilityPlotter:
 
         self.all_options = ['SWA-PAS-GRND-MOM', 'MAG-RTN-NORMAL',
                             'EUI-FSI304-IMAGE', 'EUI-FSI174-IMAGE',
+                            'EUI-HRILYA1216-IMAGE', 'EUI-HRIEUV174-IMAGE',
                             'SWA-EAS-PAD-PSD', 'SWA-HIS-PHA',
-                            'RPW-BIA-DENSITY', 'EUI-HRILYA1216-IMAGE']
+                            'RPW-BIA-DENSITY',
+                            ]
+
         self.all_options = sorted(self.all_options)
         self.multi_choice = MultiChoice(
             value=self.all_options,
@@ -52,15 +56,31 @@ class DataAvailabilityPlotter:
 
     def add_interval_data(self, descriptor):
         product = DataProduct(descriptor)
-        dates_plotted = []
-        for _, row in product.intervals.iterrows():
-            date = row['Start'].date()
-            if date not in dates_plotted:
-                self.plotter.hbar(y=[descriptor],
-                                  left=date,
-                                  right=date + timedelta(days=1),
-                                  height=0.5)
-                dates_plotted.append(date)
+        intervals = self.merge_intervals(product.intervals)
+        for interval in intervals:
+            self.plotter.hbar(y=[descriptor],
+                              left=interval.lower,
+                              right=interval.upper,
+                              height=0.5,
+                              color=self.get_color(descriptor))
+
+    @staticmethod
+    def get_color(descriptor):
+        return {'EUI': '#e41a1c',
+                'MAG': '#377eb8',
+                'SWA': '#4daf4a',
+                'RPW': '#984ea3'}[descriptor[:3]]
+
+    @staticmethod
+    def merge_intervals(intervals):
+        intervals = intervals.sort_values(by='Start')
+        start_dates = intervals['Start'].map(lambda t: t.date()).unique()
+        end_dates = (intervals['End'].map(lambda t: t.date()).unique() +
+                     timedelta(days=1))
+        intervals = portion.empty()
+        for start, end in zip(start_dates, end_dates):
+            intervals = intervals | portion.closed(start, end)
+        return intervals
 
     def show(self):
         show(self.layout)
