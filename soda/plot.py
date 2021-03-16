@@ -11,8 +11,9 @@ from soda.availability import DataProduct
 class DataAvailabilityPlotter:
     def __init__(self, output_filename='soda.html'):
         output_file(output_filename, title='SODA')
+        datestr = datetime.now().strftime('%Y-%m-%d')
         self.plotter = figure(sizing_mode='stretch_width', plot_height=400,
-                              title="Solar Orbiter data availability",
+                              title=f"Solar Orbiter data availability (last updated {datestr}, daily resolution)",
                               x_axis_type='datetime', y_range=[],
                               x_range=(datetime(2020, 2, 10), datetime.now()),
                               tools=[PanTool(dimensions='width'),
