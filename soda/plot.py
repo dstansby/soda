@@ -2,11 +2,12 @@ from datetime import datetime, timedelta
 import portion
 
 from bokeh.io import output_file, show
-from bokeh.models import MultiChoice, PanTool, BoxZoomTool
+from bokeh.models import MultiChoice, PanTool, BoxZoomTool, FixedTicker
 from bokeh.plotting import figure
-from bokeh.layouts import layout, Spacer
+from bokeh.layouts import gridplot, Spacer
 
 from soda.availability import DataProduct
+from soda.trajectory import get_traj
 
 
 class DataAvailabilityPlotter:
@@ -14,7 +15,7 @@ class DataAvailabilityPlotter:
         output_file(output_filename, title='SODA')
         datestr = datetime.now().strftime('%Y-%m-%d')
         self.plotter = figure(sizing_mode='stretch_width', plot_height=400,
-                              title=f"Solar Orbiter data availability (last updated {datestr}, daily resolution)",
+                              title=f"Solar Orbiter data availability (last updated {datestr}, daily resolution, all data available at http://soar.esac.esa.int/soar/)",
                               x_axis_type='datetime', y_range=[],
                               x_range=(datetime(2020, 2, 10), datetime.now()),
                               tools=[PanTool(dimensions='width'),
@@ -27,12 +28,13 @@ class DataAvailabilityPlotter:
         self.plotter.xaxis.axis_label = "Date"
         self.plotter.outline_line_color = None
 
-        self.all_options = ['SWA-PAS-3D',
+        self.all_options = ['SWA-PAS-GRND-MOM', 'SWA-EAS-PAD-PSD',
                             'MAG-RTN-NORMAL',
                             'EUI-FSI304-IMAGE', 'EUI-FSI174-IMAGE',
                             'EUI-HRILYA1216-IMAGE', 'EUI-HRIEUV174-IMAGE',
-                            'SWA-EAS-PAD-PSD', 'SWA-HIS-PHA',
                             'RPW-BIA-DENSITY',
+                            'EPD-EPT-ASUN-RATES', 'EPD-EPT-SUN-RATES',
+                            'EPD-STEP-RATES',
                             ]
 
         self.all_options = sorted(self.all_options)
@@ -44,9 +46,24 @@ class DataAvailabilityPlotter:
             sizing_mode='stretch_height',
             title='Select data products')
 
-        self.layout = layout([[self.multi_choice, self.plotter]],
-                             sizing_mode='stretch_width',
-                             height=600)
+        self.r_plot = figure(sizing_mode='stretch_width', plot_height=150,
+                             x_axis_type='datetime', y_range=[0.3, 1],
+                             x_range=self.plotter.x_range,
+                             tools=[],
+                             title='Radial distance')
+        self.phi_plot = figure(sizing_mode='stretch_width', plot_height=150,
+                               x_axis_type='datetime', y_range=[0, 180],
+                               x_range=self.plotter.x_range,
+                               tools=[],
+                               title='Earth-Orbiter angle')
+        self.phi_plot.yaxis[0].ticker = FixedTicker(ticks=[0, 90, 180])
+        self.add_trajectory()
+
+        self.layout = gridplot([[self.multi_choice, self.plotter],
+                                [None, self.r_plot],
+                                [None, self.phi_plot],
+                                [None, Spacer()]],
+                               sizing_mode='stretch_width')
 
         # Add data
         for desc in self.all_options:
@@ -65,12 +82,18 @@ class DataAvailabilityPlotter:
                               height=0.5,
                               color=self.get_color(descriptor))
 
+    def add_trajectory(self):
+        dates, r, sun_earth_angle = get_traj()
+        self.r_plot.line(x=dates, y=r)
+        self.phi_plot.line(x=dates, y=sun_earth_angle)
+
     @staticmethod
     def get_color(descriptor):
         return {'EUI': '#e41a1c',
                 'MAG': '#377eb8',
                 'SWA': '#4daf4a',
-                'RPW': '#984ea3'}[descriptor[:3]]
+                'RPW': '#984ea3',
+                'EPD': '#ff7f00'}[descriptor[:3]]
 
     @staticmethod
     def merge_intervals(intervals):
