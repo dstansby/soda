@@ -9,17 +9,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
         python-version: 3.9
+
     - name: Cache pip dependencies
       uses: actions/cache@v2
       with:
         path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('requirements_doc.txt') }}
+        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
+
+    - name: Cache heliopy data
+      uses: actions/cache@v2
+      with:
+        path: ~/heliopy/data/spice
+        # Bump this version number ot clear the heliopy spice cache
+        key: 'v1'
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
