@@ -28,7 +28,8 @@ class DataAvailabilityPlotter:
         self.plotter.xaxis.axis_label = "Date"
         self.plotter.outline_line_color = None
 
-        self.all_options = ['SWA-PAS-GRND-MOM', 'SWA-EAS-PAD-PSD',
+        self.all_options = ['SWA-PAS-MOM', 'SWA-PAS-GRND-MOM',
+                            'SWA-EAS-PAD-PSD',
                             'MAG-RTN-NORMAL',
                             'EUI-FSI304-IMAGE', 'EUI-FSI174-IMAGE',
                             'EUI-HRILYA1216-IMAGE', 'EUI-HRIEUV174-IMAGE',
