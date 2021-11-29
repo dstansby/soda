@@ -38,3 +38,13 @@ jobs:
     - name: Generate HTML
       run: |
         python run_soda.py
+
+   - name: Deploy 🚀
+     #on:
+     #   push:
+    #     branches:
+    #       - main
+     branch: pages
+     uses: JamesIves/github-pages-deploy-action@4.1.7
+     with:
+       folder: . # The folder the action should deploy.
