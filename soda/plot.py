@@ -38,6 +38,7 @@ class DataAvailabilityPlotter:
                             ]
 
         self.all_options = sorted(self.all_options)
+        '''
         self.multi_choice = MultiChoice(
             value=self.all_options,
             options=self.all_options,
@@ -45,6 +46,7 @@ class DataAvailabilityPlotter:
             width=200,
             sizing_mode='stretch_height',
             title='Select data products')
+        '''
 
         self.r_plot = figure(sizing_mode='stretch_width', plot_height=150,
                              x_axis_type='datetime', y_range=[0.3, 1],
@@ -62,19 +64,19 @@ class DataAvailabilityPlotter:
         url = '<a href="http://soar.esac.esa.int/soar/">Solar Oribter Archive</a>'
         self.title = Div(
             text=(f"<h1>Solar Orbiter data availability</h1> Last updated {datestr}, daily resolution, all data available at the {url}"))
-        self.layout = gridplot([[None, self.title],
-                                [self.multi_choice, self.plotter],
-                                [None, self.r_plot],
-                                [None, self.phi_plot],
-                                [None, Spacer()]],
+        self.layout = gridplot([[self.title],
+                                [self.plotter],
+                                [self.r_plot],
+                                [self.phi_plot],
+                                [Spacer()]],
                                sizing_mode='stretch_width')
 
         # Add data
         for desc in self.all_options:
             self.add_interval_data(desc)
 
-        self.multi_choice.js_link("value", self.plotter.y_range, "factors")
-        self.plotter.y_range.factors = self.multi_choice.value
+        # self.multi_choice.js_link("value", self.plotter.y_range, "factors")
+        self.plotter.y_range.factors = self.all_options
 
     def add_interval_data(self, descriptor):
         product = DataProduct(descriptor)
