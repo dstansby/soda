@@ -19,7 +19,7 @@ class DataAvailabilityPlotter:
                  'undo',
                  'redo',
                  'reset']
-        self.plotter = figure(sizing_mode='stretch_width', plot_height=400,
+        self.plotter = figure(sizing_mode='stretch_width', plot_height=500,
                               x_axis_type='datetime', y_range=[],
                               x_range=(datetime(2020, 2, 10), datetime.now()),
                               tools=tools)
@@ -29,14 +29,15 @@ class DataAvailabilityPlotter:
         self.all_options = ['SWA-PAS-MOM', 'SWA-PAS-GRND-MOM',
                             'SWA-EAS-PAD-PSD',
                             'MAG-RTN-NORMAL',
-                            'EUI-FSI304-IMAGE', 'EUI-FSI174-IMAGE',
-                            'EUI-HRILYA1216-IMAGE', 'EUI-HRIEUV174-IMAGE',
                             'RPW-BIA-DENSITY',
                             'EPD-EPT-SUN-RATES',
                             'EPD-STEP-RATES',
-                            ]
+                            'EUI-FSI304-IMAGE', 'EUI-FSI174-IMAGE',
+                            'EUI-HRILYA1216-IMAGE', 'EUI-HRIEUV174-IMAGE',
+                            'SPICE-N-RAS',
+                            'SPICE-N-EXP'
+                            ][::-1]
 
-        self.all_options = sorted(self.all_options)
         '''
         self.multi_choice = MultiChoice(
             value=self.all_options,
@@ -104,7 +105,8 @@ class DataAvailabilityPlotter:
                 'MAG': '#377eb8',
                 'SWA': '#4daf4a',
                 'RPW': '#984ea3',
-                'EPD': '#ff7f00'}[descriptor[:3]]
+                'EPD': '#ff7f00',
+                'SPI': '#a65628'}[descriptor[:3]]
 
     @staticmethod
     def merge_intervals(intervals):
