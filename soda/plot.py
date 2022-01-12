@@ -24,7 +24,6 @@ class DataAvailabilityPlotter:
                               x_range=(datetime(2020, 2, 10), datetime.now()),
                               tools=tools)
         self.plotter.ygrid.grid_line_color = None
-        self.plotter.xaxis.axis_label = "Date"
         self.plotter.outline_line_color = None
 
         self.all_options = ['SWA-PAS-MOM', 'SWA-PAS-GRND-MOM',
