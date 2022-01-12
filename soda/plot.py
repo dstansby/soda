@@ -63,13 +63,17 @@ class DataAvailabilityPlotter:
 
         url = '<a href="http://soar.esac.esa.int/soar/">Solar Oribter Archive</a>'
         self.title = Div(
-            text=(f"<h1>Solar Orbiter data availability</h1> Last updated {datestr}, daily resolution, all data available at the {url}"))
+            text=(f"<h1>Solar Orbiter data availability</h1> "
+                  f"Last updated {datestr}, daily resolution, "
+                  f"all data available at the {url}"))
 
-        panels = [self.title, self.plotter, self.r_plot, self.phi_plot, Spacer()]
+        panels = [self.title, self.plotter, self.r_plot, self.phi_plot]
         for p in panels:
             p.align = 'center'
         self.layout = gridplot(panels, ncols=1,
                                sizing_mode='stretch_width')
+        # top, right, bottom, left
+        self.layout.margin = (0, 100, 0, 100)
         # Add data
         for desc in self.all_options:
             self.add_interval_data(desc)
