@@ -33,7 +33,7 @@ class DataAvailabilityPlotter:
                             'EUI-FSI304-IMAGE', 'EUI-FSI174-IMAGE',
                             'EUI-HRILYA1216-IMAGE', 'EUI-HRIEUV174-IMAGE',
                             'RPW-BIA-DENSITY',
-                            'EPD-EPT-ASUN-RATES', 'EPD-EPT-SUN-RATES',
+                            'EPD-EPT-SUN-RATES',
                             'EPD-STEP-RATES',
                             ]
 
