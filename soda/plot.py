@@ -14,15 +14,15 @@ class DataAvailabilityPlotter:
     def __init__(self, output_filename='soda.html'):
         output_file(output_filename, title='SODA')
         datestr = datetime.now().strftime('%Y-%m-%d')
+        tools = [PanTool(dimensions='width'),
+                 BoxZoomTool(dimensions='width'),
+                 'undo',
+                 'redo',
+                 'reset']
         self.plotter = figure(sizing_mode='stretch_width', plot_height=400,
                               x_axis_type='datetime', y_range=[],
                               x_range=(datetime(2020, 2, 10), datetime.now()),
-                              tools=[PanTool(dimensions='width'),
-                                     BoxZoomTool(dimensions='width'),
-                                     'undo',
-                                     'redo',
-                                     'reset',
-                                     'save'])
+                              tools=tools)
         self.plotter.ygrid.grid_line_color = None
         self.plotter.xaxis.axis_label = "Date"
         self.plotter.outline_line_color = None
@@ -51,11 +51,13 @@ class DataAvailabilityPlotter:
         self.r_plot = figure(sizing_mode='stretch_width', plot_height=150,
                              x_axis_type='datetime', y_range=[0.25, 1.05],
                              x_range=self.plotter.x_range,
-                             title='Radial distance')
+                             title='Radial distance',
+                             tools=tools)
         self.phi_plot = figure(sizing_mode='stretch_width', plot_height=150,
                                x_axis_type='datetime', y_range=[0, 180],
                                x_range=self.plotter.x_range,
-                               title='Earth-Orbiter angle')
+                               title='Earth-Orbiter angle',
+                               tools=tools)
         self.phi_plot.yaxis[0].ticker = FixedTicker(ticks=[0, 90, 180])
         self.add_trajectory()
 
