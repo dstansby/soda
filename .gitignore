@@ -1,3 +1,4 @@
 *.pyc
 soda/.data/*
 *.DS_Store
+index.html
