@@ -4,7 +4,7 @@ import portion
 from bokeh.io import output_file, show
 from bokeh.models import MultiChoice, PanTool, BoxZoomTool, FixedTicker, Div
 from bokeh.plotting import figure
-from bokeh.layouts import gridplot, Spacer
+from bokeh.layouts import gridplot, Spacer, column
 
 from soda.availability import DataProduct
 from soda.trajectory import get_traj
@@ -65,13 +65,15 @@ class DataAvailabilityPlotter:
                   f"Last updated {datestr}, daily resolution, "
                   f"all data available at the {url}"))
 
-        panels = [self.title, self.plotter, self.r_plot, self.phi_plot]
-        for p in panels:
+        panels = [self.plotter, self.r_plot, self.phi_plot]
+        for p in panels + [self.title]:
             p.align = 'center'
-        self.layout = gridplot(panels, ncols=1,
-                               sizing_mode='stretch_width')
+        layout = gridplot(panels, ncols=1,
+                          sizing_mode='stretch_width',
+                          toolbar_location='right')
+        self.layout = column([self.title, layout], sizing_mode='stretch_width')
         # top, right, bottom, left
-        self.layout.margin = (0, 100, 0, 100)
+        self.layout.margin = (0, 75, 0, 75)
         # Add data
         for desc in self.all_options:
             self.add_interval_data(desc)
