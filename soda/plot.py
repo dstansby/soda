@@ -49,14 +49,12 @@ class DataAvailabilityPlotter:
         '''
 
         self.r_plot = figure(sizing_mode='stretch_width', plot_height=150,
-                             x_axis_type='datetime', y_range=[0.3, 1],
+                             x_axis_type='datetime', y_range=[0.25, 1.05],
                              x_range=self.plotter.x_range,
-                             tools=[],
                              title='Radial distance')
         self.phi_plot = figure(sizing_mode='stretch_width', plot_height=150,
                                x_axis_type='datetime', y_range=[0, 180],
                                x_range=self.plotter.x_range,
-                               tools=[],
                                title='Earth-Orbiter angle')
         self.phi_plot.yaxis[0].ticker = FixedTicker(ticks=[0, 90, 180])
         self.add_trajectory()
