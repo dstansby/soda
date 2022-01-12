@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 import portion
 
 from bokeh.io import output_file, show
-from bokeh.models import MultiChoice, PanTool, BoxZoomTool, FixedTicker
+from bokeh.models import MultiChoice, PanTool, BoxZoomTool, FixedTicker, Div
 from bokeh.plotting import figure
 from bokeh.layouts import gridplot, Spacer
 
@@ -15,7 +15,6 @@ class DataAvailabilityPlotter:
         output_file(output_filename, title='SODA')
         datestr = datetime.now().strftime('%Y-%m-%d')
         self.plotter = figure(sizing_mode='stretch_width', plot_height=400,
-                              title=f"Solar Orbiter data availability (last updated {datestr}, daily resolution, all data available at http://soar.esac.esa.int/soar/)",
                               x_axis_type='datetime', y_range=[],
                               x_range=(datetime(2020, 2, 10), datetime.now()),
                               tools=[PanTool(dimensions='width'),
@@ -60,7 +59,11 @@ class DataAvailabilityPlotter:
         self.phi_plot.yaxis[0].ticker = FixedTicker(ticks=[0, 90, 180])
         self.add_trajectory()
 
-        self.layout = gridplot([[self.multi_choice, self.plotter],
+        url = '<a href="http://soar.esac.esa.int/soar/">Solar Oribter Archive</a>'
+        self.title = Div(
+            text=(f"<h1>Solar Orbiter data availability</h1> Last updated {datestr}, daily resolution, all data available at the {url}"))
+        self.layout = gridplot([[None, self.title],
+                                [self.multi_choice, self.plotter],
                                 [None, self.r_plot],
                                 [None, self.phi_plot],
                                 [None, Spacer()]],
