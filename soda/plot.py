@@ -66,6 +66,7 @@ class DataAvailabilityPlotter:
             text=(f"<h1>Solar Orbiter data availability</h1> "
                   f"Last updated {datestr}, daily resolution, "
                   f"all data available at the {url}"))
+        self.title.style = {'text-align': 'center'}
 
         panels = [self.plotter, self.r_plot, self.phi_plot]
         for p in panels + [self.title]:
