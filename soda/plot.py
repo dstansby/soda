@@ -35,7 +35,8 @@ class DataAvailabilityPlotter:
                             'EUI-FSI304-IMAGE', 'EUI-FSI174-IMAGE',
                             'EUI-HRILYA1216-IMAGE', 'EUI-HRIEUV174-IMAGE',
                             'SPICE-N-RAS',
-                            'SPICE-N-EXP'
+                            'SPICE-N-EXP',
+                            'SOLOHI-1FT',
                             ][::-1]
 
         '''
@@ -106,7 +107,9 @@ class DataAvailabilityPlotter:
                 'SWA': '#4daf4a',
                 'RPW': '#984ea3',
                 'EPD': '#ff7f00',
-                'SPI': '#a65628'}[descriptor[:3]]
+                'SPI': '#a65628',
+                'SOL': '#dd1c77',
+                }[descriptor[:3]]
 
     @staticmethod
     def merge_intervals(intervals):
